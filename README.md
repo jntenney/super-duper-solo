@@ -4,14 +4,13 @@ Codesmith solo project used to reinforce learning MongoDB, Express, React, Node,
 
 ## Learning Goals
 
-- [ ] Use ES modules in Node rather than CommonJS in the backend
 - [ ] Use Vite for packaging on the frontend
 - [ ] Use .env file for environment variables
 - [ ] Define application error types (extend from Error)
 - [ ] Deeper understanding of Express routing and error handling
 - [ ] Deeper understanding of Mongoose and managing MongoDB clusters
 - [ ] Reinforcement of using bcrypt, JWT and http only cookies for authentication
-- [ ] Reinforcement of implementing authorized middleware routes within Express
+- [ ] Reinforcement of implementing authorized/protected middleware routes within Express
 
 ## Minimum Viable Product
 
@@ -41,4 +40,4 @@ In no particular order:
     - Load their user profile by id from DB and send in response body
 - updateUserProfile
   - If the user has valid JWT httpOnly cookie
-    - Allow them to update their name, email address, or password
+    - Allow them to update their first name, last name, email address, or password
