@@ -1,6 +1,6 @@
 // import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaSignInAlt, FaSignOutAlt, FaShoppingCart } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -27,33 +27,39 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
+      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <LinkContainer to='/'>
+          <LinkContainer to="/">
             <Navbar.Brand>Super Duper Solo</Navbar.Brand>
           </LinkContainer>
-          <Navbar.Toggle aria-controls='basic-navbar-nav' />
-          <Navbar.Collapse id='basic-navbar-nav'>
-            <Nav className='ms-auto'>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
               {userInfo ? (
                 <>
-                  <NavDropdown title={userInfo.firstName + ' ' +userInfo.lastName} id='username'>
-                    <LinkContainer to='/profile'>
-                      <NavDropdown.Item>Profile</NavDropdown.Item>
+                  <LinkContainer to="/cart">
+                    <Nav.Link>
+                      <FaShoppingCart />
+                    </Nav.Link>
+                  </LinkContainer>
+                  <NavDropdown title={userInfo.firstName} id="username">
+                    <LinkContainer to="/profile">
+                      <NavDropdown.Item>Update Profile</NavDropdown.Item>
                     </LinkContainer>
-                    <NavDropdown.Item onClick={logoutHandler}>
-                      Logout
-                    </NavDropdown.Item>
+                    <LinkContainer to="/delete">
+                      <NavDropdown.Item>Delete Profile</NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                   </NavDropdown>
                 </>
               ) : (
                 <>
-                  <LinkContainer to='/login'>
+                  <LinkContainer to="/login">
                     <Nav.Link>
                       <FaSignInAlt /> Sign In
                     </Nav.Link>
                   </LinkContainer>
-                  <LinkContainer to='/register'>
+                  <LinkContainer to="/register">
                     <Nav.Link>
                       <FaSignOutAlt /> Sign Up
                     </Nav.Link>
