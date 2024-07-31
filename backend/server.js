@@ -5,6 +5,7 @@ const colors = require('colors');
 const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/userRoutes');
 const productRouter = require('./routes/productRoutes');
+const cartRouter = require('./routes/cartRoutes');
 const connectDB = require('./config/db');
 
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(cookieParser());
 
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
+app.use('/api/carts', cartRouter);
 
 // catch-all else route, not found
 app.use((req, res, next) => {

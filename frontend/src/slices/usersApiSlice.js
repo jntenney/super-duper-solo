@@ -1,5 +1,7 @@
 import { apiSlice } from './apiSlice';
 const USERS_URL = '/api/users';
+const CARTS_URL = '/api/carts';
+const PRODUCTS_URL = '/api/products';
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -37,6 +39,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getCart: builder.query({
+      query: () => ({ url: `${CARTS_URL}` }),
+    }),
+    getProduct: builder.query({
+      query: (id) => ({ url: `${PRODUCTS_URL}/id/${id}` }),
+    }),
   }),
 });
 
@@ -46,4 +54,6 @@ export const {
   useRegisterMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useGetCartQuery,
+  useGetProductQuery,
 } = userApiSlice;

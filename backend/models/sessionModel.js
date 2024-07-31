@@ -15,8 +15,7 @@ const sessionSchema = new Schema({
     {
       id: {
         // type of ObjectId makes this behave like a foreign key referencing the 'Product' collection
-        type: Schema.Types.ObjectId,
-        ref: 'Product',
+        type: String,
       },
     },
   ],
