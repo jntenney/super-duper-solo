@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler');
+const jwt = require('jsonwebtoken');
 const { User } = require('../models/userModel');
 
 const userController = {};
@@ -96,6 +97,20 @@ userController.registerUser = asyncHandler(async (req, res, next) => {
  * @param {*} next
  */
 userController.logoutUser = asyncHandler(async (req, res, next) => {
+  const token = req.cookies.ssid;
+
+  if (token) {
+    try {
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+
+      res.locals.user = await User.findById(payload.userId).select('-password -createAt -updatedAt -__v').exec();
+    } catch (error) {
+      res.locals.user = { message: 'Bad session cookie' };
+    }
+  } else {
+    res.locals.user = { message: 'No session cookie' };
+  }
+
   next();
 });
 
@@ -113,7 +128,15 @@ userController.logoutUser = asyncHandler(async (req, res, next) => {
  * @param {*} next
  */
 userController.getUserProfile = asyncHandler(async (req, res, next) => {
-  res.status(200).json({ message: 'get user profile' });
+  const user = await User.findById(res.locals.user._id).select('-password -createAt -updatedAt -__v').exec();
+
+  if (user) {
+    res.locals.user = user;
+    next();
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
 });
 
 /**
@@ -130,7 +153,44 @@ userController.getUserProfile = asyncHandler(async (req, res, next) => {
  * @param {*} next
  */
 userController.updateUserProfile = asyncHandler(async (req, res, next) => {
-  res.status(200).json({ message: 'update user profile' });
+  const user = await User.findById(res.locals.user._id).select('-password -createAt -updatedAt -__v').exec();
+
+  if (user) {
+    user.firstName = req.body.firstName || user.firstName;
+    user.lastName = req.body.lastName || user.lastName;
+    user.email = req.body.email || user.email;
+
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    const updatedUser = await user.save();
+
+    res.locals.user = {
+      _id: user._id,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
+      email: updatedUser.email,
+    };
+
+    next();
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+userController.deleteUserProfile = asyncHandler(async (req, res, next) => {
+  const user = await User.findByIdAndDelete(res.locals.user._id).select('-password -createAt -updatedAt -__v').exec();
+
+  if (user) {
+    res.locals.user = user;
+
+    next();
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
 });
 
 module.exports = userController;

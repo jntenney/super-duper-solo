@@ -1,6 +1,6 @@
 # Overview
 
-Codesmith solo project used to reinforce learning MongoDB, Express, React, Node, Redux, JWT and various other technologies.
+Codesmith solo project used to reinforce learning MongoDB, Express, React, Node, Redux, JWT and various other technologies. Using Amazon Products Dataset 2023 (1.4M Products) from https://www.kaggle.com/datasets/asaniczka/amazon-products-dataset-2023-1-4m-products.
 
 ## Learning Goals
 

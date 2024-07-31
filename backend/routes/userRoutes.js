@@ -28,16 +28,36 @@ userRouter.post(
     res.json(res.locals.user);
   }
 );
-userRouter.post(
-  '/logout',
-  sessionController.getPayloadFromCookie,
-  sessionController.removeTokenCookie,
-  (req, res, next) => {
+userRouter.post('/logout', userController.logoutUser, sessionController.removeTokenCookie, (req, res, next) => {
+  res.status(200);
+  res.json(res.locals.user);
+});
+
+userRouter
+  .route('/profile')
+  .get(sessionController.authPayloadFromCookie, userController.getUserProfile, (req, res, next) => {
     res.status(200);
     res.json(res.locals.user);
-  }
-);
+  });
 
-userRouter.route('/profile').get(userController.getUserProfile).put(userController.updateUserProfile);
+userRouter
+  .route('/profile')
+  .put(sessionController.authPayloadFromCookie, userController.updateUserProfile, (req, res, next) => {
+    res.status(200);
+    res.json(res.locals.user);
+  });
+
+userRouter
+  .route('/profile')
+  .delete(
+    sessionController.authPayloadFromCookie,
+    sessionController.deleteSession,
+    sessionController.removeTokenCookie,
+    userController.deleteUserProfile,
+    (req, res, next) => {
+      res.status(200);
+      res.json(res.locals.user);
+    }
+  );
 
 module.exports = userRouter;

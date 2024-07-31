@@ -23,7 +23,40 @@ sessionController.generateTokenCookie = asyncHandler(async (req, res, next) => {
   next();
 });
 
-sessionController.getPayloadFromCookie = asyncHandler(async (req, res, next) => {
+sessionController.authPayloadFromCookie = asyncHandler(async (req, res, next) => {
+  const token = req.cookies.ssid;
+
+  if (token) {
+    try {
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+
+      res.locals.user = await User.findById(payload.userId).select('-password').exec();
+
+      next();
+    } catch (error) {
+      console.error(error);
+      res.status(401);
+      throw new Error('Not authorized, token failed');
+    }
+  } else {
+    res.status(401);
+    throw new Error('Not authorized, no token');
+  }
+});
+
+sessionController.removeTokenCookie = asyncHandler(async (req, res, next) => {
+  res.cookie('ssid', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  next();
+});
+
+/**
+ * isLoggedIn - find the appropriate session for this request in the database, then
+ * verify whether or not the session is still valid.
+ */
+sessionController.isLoggedIn = asyncHandler(async (req, res, next) => {
   const token = req.cookies.ssid;
 
   if (token) {
@@ -46,37 +79,6 @@ sessionController.getPayloadFromCookie = asyncHandler(async (req, res, next) => 
   next();
 });
 
-sessionController.removeTokenCookie = asyncHandler(async (req, res, next) => {
-  res.cookie('ssid', '', {
-    httpOnly: true,
-    expires: new Date(0),
-  });
-});
-
-/**
- * isLoggedIn - find the appropriate session for this request in the database, then
- * verify whether or not the session is still valid.
- */
-sessionController.isLoggedIn = asyncHandler(async (req, res, next) => {
-  const user_id = req.cookies.ssid;
-  if (user_id) {
-    Session.findOne({ cookieId: user_id })
-      .then((session) => {
-        if (session) {
-          return next();
-        } else {
-          console.log('no active session for user');
-          // if the user doesn't have cookie(ssid) or and active session then go to login
-          res.redirect('/');
-        }
-      })
-      .catch((error) => next(error));
-  } else {
-    console.log('no ssid cookie for user');
-    res.redirect('/');
-  }
-});
-
 /**
  * startSession - create and save a new Session into the database.
  */
@@ -97,6 +99,20 @@ sessionController.startSession = asyncHandler(async (req, res, next) => {
     }
   } else {
     console.log(`Session already exists for user - ${userId}`.yellow);
+  }
+  next();
+});
+
+sessionController.deleteSession = asyncHandler(async (req, res, next) => {
+  const userId = res.locals.user._id;
+
+  console.log(`Delete session for: ${userId}`);
+
+  let session = await Session.findOneAndDelete({ cookieId: userId }).exec();
+  if (!session) {
+    console.log(`No session for user - ${userId}`.yellow);
+  } else {
+    console.log(`Deleted Session for user - ${userId}`.yellow);
   }
   next();
 });
