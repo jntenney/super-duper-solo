@@ -1,4 +1,6 @@
 import { apiSlice } from './apiSlice';
+import { setCart } from '../slices/cartSlice';
+
 const USERS_URL = '/api/users';
 const CARTS_URL = '/api/carts';
 const PRODUCTS_URL = '/api/products';
@@ -40,7 +42,21 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getCart: builder.query({
-      query: () => ({ url: `${CARTS_URL}` }),
+      query: () => `${CARTS_URL}`,
+      // eslint-disable-next-line no-shadow-restricted-names
+      async onQueryStarted(undefined, { dispatch, queryFulfilled }) {
+        // `onStart` side-effect
+        console.log('started');
+        try {
+          const { data } = await queryFulfilled;
+          // `onSuccess` side-effect
+          console.log('success');
+          dispatch(setCart(data));
+        } catch (err) {
+          console.log(err);
+          // `onError` side-effect
+        }
+      },
     }),
     getProduct: builder.query({
       query: (id) => ({ url: `${PRODUCTS_URL}/id/${id}` }),
