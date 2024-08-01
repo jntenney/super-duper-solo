@@ -1,10 +1,13 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Loader from '../components/Loader';
 import { useGetProductQuery } from '../slices/usersApiSlice';
 import { toast } from 'react-toastify';
 
+// eslint-disable-next-line react/prop-types
 const CartCard = ({ productId }) => {
+  // eslint-disable-next-line no-unused-vars
   const { data: product, isLoading, isFetching, isError } = useGetProductQuery(productId);
 
   if (isError) {
@@ -16,7 +19,7 @@ const CartCard = ({ productId }) => {
   return (
     <>
       <Card>
-        <Card.Img variant="top" src={product.imgUrl} height={400} width={330} />
+        <Card.Img variant="top" src={product.imgUrl} height={400} width={100} />
         <Card.Body>
           <Card.Title>{product.title}</Card.Title>
           <Card.Link href={product.productURL}>Product URL</Card.Link>

@@ -8,6 +8,7 @@ import Loader from '../components/Loader';
 import { useDeleteUserMutation } from '../slices/usersApiSlice';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../slices/authSlice';
+import { removeCart } from '../slices/cartSlice';
 
 const DeleteScreen = () => {
   const [email, setEmail] = useState('');
@@ -38,6 +39,7 @@ const DeleteScreen = () => {
       }).unwrap();
       console.log(res);
       dispatch(logout());
+      dispatch(removeCart());
       navigate('/login');
       toast.success('Profile delete successfully');
     } catch (err) {

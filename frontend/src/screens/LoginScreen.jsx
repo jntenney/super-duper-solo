@@ -3,9 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLoginMutation, useGetCartQuery } from '../slices/usersApiSlice';
+import { useLoginMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
-import { setCart } from '../slices/cartSlice';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 
@@ -17,16 +16,14 @@ const LoginScreen = () => {
   const navigate = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
-  const { cart = [], isCartLoading } = useGetCartQuery();
 
   const { userInfo } = useSelector((state) => state.auth);
-  const { cartInfo } = useSelector((state) => state.cart);
 
   useEffect(() => {
-    if (userInfo && cartInfo) {
+    if (userInfo) {
       navigate('/');
     }
-  }, [navigate, userInfo, cartInfo]);
+  }, [navigate, userInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -34,17 +31,11 @@ const LoginScreen = () => {
       let res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
 
-      res = await cart().unwrap();
-      console.log(res);
-      dispatch(setCart([...res]));
-
       navigate('/');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
   };
-
-  const loginOrCartLoading = isLoading || isCartLoading;
 
   return (
     <FormContainer>
@@ -71,12 +62,12 @@ const LoginScreen = () => {
           ></Form.Control>
         </Form.Group>
 
-        <Button disabled={loginOrCartLoading} type="submit" variant="primary" className="mt-3">
+        <Button disabled={isLoading} type="submit" variant="primary" className="mt-3">
           Sign In
         </Button>
       </Form>
 
-      {loginOrCartLoading && <Loader />}
+      {isLoading && <Loader />}
 
       <Row className="py-3">
         <Col>
