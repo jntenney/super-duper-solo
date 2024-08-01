@@ -9,14 +9,19 @@ const Hero = () => {
             <h1 className="text-center mb-4">Super Duper Solo Project</h1>
             <h3 className="mb-4">Problem Statement</h3>
             <p className="mb-4">
-              Building a Web application and REST API that enforces user authentication and authorization is hard. How
-              how would it be to implement a secure authentication service, profile service, session management service
-              and cart service?
+              Building a Web application and REST API that enforces authentication and authorization is hard. How hard
+              is it for <strong>realz</strong> to implement a secure authentication service, profile service, session
+              management service and cart service? Using the{' '}
+              <a href="https://www.kaggle.com/datasets/asaniczka/amazon-products-dataset-2023-1-4m-products">
+                Amazon Products Dataset 2023 (1.4M Products)
+              </a>{' '}
+              let's find out.
             </p>
             <h3 className="mb-4">Solution</h3>
             <p className="mb-4">
-              While it is challenging to build such services correctly technologies like JSON Web Tokens, HttpOnly
-              cookies, React Router, Redux Toolkit and Express middleware components can make life a lot easier.
+              While it is challenging to build such services correctly, technologies like JSON Web Tokens, HttpOnly
+              cookies, React Router, Redux Toolkit and Express middleware components can make the developer&apos;s life
+              a lot easier, increase the quality of the product, and decrease time to delivery.
             </p>
             <p>
               <strong>Frontend Technologies: </strong>
