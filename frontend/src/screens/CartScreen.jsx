@@ -19,11 +19,9 @@ const CartScreen = () => {
 
   if (isLoading) return <Loader />;
 
-  console.log(cart);
-
   return (
     <>
-      <Row xs={1} md={2} className="g-4">
+      <Row xs={1} md={3} className="g-4">
         {cart.map((el) => (
           <Col key={el}>
             <CartCard productId={el} />

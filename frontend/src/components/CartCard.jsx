@@ -21,7 +21,8 @@ const CartCard = ({ productId }) => {
       <Card>
         <Card.Img variant="top" src={product.imgUrl} height={400} width={100} />
         <Card.Body>
-          <Card.Title>{product.title}</Card.Title>
+          <Card.Title>{product.asin}</Card.Title>
+          <Card.Text>{product.title.slice(0, 79)}</Card.Text>
           <Card.Link href={product.productURL}>Product URL</Card.Link>
         </Card.Body>
       </Card>

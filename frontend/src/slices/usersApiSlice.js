@@ -46,11 +46,9 @@ export const userApiSlice = apiSlice.injectEndpoints({
       // eslint-disable-next-line no-shadow-restricted-names
       async onQueryStarted(undefined, { dispatch, queryFulfilled }) {
         // `onStart` side-effect
-        console.log('started');
         try {
           const { data } = await queryFulfilled;
           // `onSuccess` side-effect
-          console.log('success');
           dispatch(setCart(data));
         } catch (err) {
           console.log(err);

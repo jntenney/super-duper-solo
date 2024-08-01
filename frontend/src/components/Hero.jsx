@@ -7,10 +7,16 @@ const Hero = () => {
         <Container className="d-flex justify-content-center mb-5">
           <Card className="p-5 d-flex flex-column align-items-left hero-card bg-light w-100">
             <h1 className="text-center mb-4">Super Duper Solo Project</h1>
+            <h3 className="mb-4">Problem Statement</h3>
             <p className="mb-4">
-              This project is an exploration of various frontend and backend technologies which are used to build a REST
-              based user authentication service, user profile service and user session management service. JSON Web
-              Tokens and HttpOnly cookies are used to ensure each user can only access and edit their own data.
+              Building a Web application and REST API that enforces user authentication and authorization is hard. How
+              how would it be to implement a secure authentication service, profile service, session management service
+              and cart service?
+            </p>
+            <h3 className="mb-4">Solution</h3>
+            <p className="mb-4">
+              While it is challenging to build such services correctly technologies like JSON Web Tokens, HttpOnly
+              cookies, React Router, Redux Toolkit and Express middleware components can make life a lot easier.
             </p>
             <p>
               <strong>Frontend Technologies: </strong>
